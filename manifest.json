@@ -1,0 +1,10 @@
+{
+  "name": "SCRAM — Hide & Seek",
+  "short_name": "SCRAM",
+  "description": "A real-world hide-and-seek game for friends.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#101510",
+  "theme_color": "#101510",
+  "icons": []
+}
