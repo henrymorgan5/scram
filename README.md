@@ -1,34 +1,30 @@
-# SCRAM — Hide & Seek (prototype)
+# SCRAM — location-enabled prototype
 
-A mobile-first installable web-app prototype for a real-world hide-and-seek game.
+This build adds a real OpenStreetMap/Leaflet map, a pre-game zone-centre picker, an adjustable 100 m–1.5 km radius, an explicit **Use my location** permission action, GPS tracking during the local round, and a working local Hunter ping timer/status.
 
-## What works in this prototype
-- Responsive mobile UI
-- Create a six-character demo game code or enter one
-- Choose Runner, Hunter, or Random
-- Configure round length, head start, ping interval and zone size
-- Round timer and head-start transition
-- Simulated location ping and tag reporting
-- End-of-round results screen
-- PWA manifest and service-worker scaffold
+## Publish update
+1. Extract the ZIP.
+2. In the GitHub `scram` repository, choose **Add file → Upload files**.
+3. Upload/replace all files inside this folder, including `index.html`, `styles.css`, `app.js`, `manifest.json`, `sw.js`, and `README.md`.
+4. Commit changes. GitHub Pages should redeploy automatically.
+5. Open the HTTPS website, create a game, tap the map to choose the centre, set the radius, then start the round. Use **Use my location** to request GPS permission.
 
-## What is not connected yet
-This is a front-end prototype. It does **not** provide real multiplayer: a code entered on another phone does not join the same online game. It does not collect or share GPS, send push notifications, provide voice radio, or implement geofencing / a shrinking boundary. The map is illustrative only.
+## What works now
+- Real interactive street map (requires internet access).
+- Tap or drag a marker to select the play-zone centre before the round.
+- Set the radius from 100 m to 1.5 km.
+- Browser geolocation permission and local GPS tracking while a round is active; tracking stops when the round ends.
+- Zone circle drawn on the setup and game maps; local out-of-zone warning.
+- Local round timer, head start, and Hunter ping schedule.
 
-## Run locally
-Open `index.html` in a browser. For service-worker/PWA testing, serve this folder over HTTPS or localhost, for example:
-```sh
-python3 -m http.server 8080
-```
-Then open `http://localhost:8080` on the same computer. For phone testing, deploy the folder to an HTTPS static host and open that URL on your phone.
+## Still requires a shared backend
+Game codes currently do not create a cross-device lobby. Location pings and tags are local UI actions, not delivered to other players. To launch real multiplayer, connect a Supabase project, add authenticated game membership, and enforce server-side role-based access for every location read/write. Never put a Supabase service-role/secret key in this public website. Use only a publishable/anon client key with strict RLS or secure Edge Functions.
 
-## Next step for real multiplayer
-Connect a backend such as Firebase or Supabase for authenticated sessions, game-code lookup, realtime player state, round state and server-side timers. Add a mapping SDK and explicit foreground/background location permissions. Use short-lived location records, delete game data on schedule, and only share location during active rounds with consent. Push notifications and team voice require separate platform integrations.
+## Safety and privacy
+- The browser only requests GPS when the player presses the location button or starts a round.
+- Location is not intentionally saved to a remote server by this build.
+- This is not ready for real-world multiplayer play until backend access controls and cross-device testing are completed.
+- Use an agreed safe area; stay out of roads and private/restricted property. Never play while driving.
 
-## Safety requirements before real-world testing
-- Restrict play to a host-defined safe area; never encourage crossing roads or entering private/restricted property.
-- Require each player to explicitly opt into location sharing.
-- Show a clear active-location indicator and provide an immediate stop-sharing/leave-game action.
-- Keep codes unguessable enough for the player count, rate-limit joining, and let the host remove players.
-- Treat out-of-zone tracking as sensitive: disclose it before joining, limit it to the active game, and show a clear warning to the player being tracked.
-- Do not rely on the app alone for physical tagging or safety.
+## Map attribution
+Map tiles are provided by OpenStreetMap contributors. See https://www.openstreetmap.org/copyright. Leaflet is loaded from unpkg CDN.
